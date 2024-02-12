@@ -111,37 +111,37 @@ Namelist = Namelistcfg + Namelistcovid + Namelisteq + Namelistpre + Namelistfit 
 
 """###Set Class instances to hold original global Variables"""
 
-class WNPFcfg():
+class WNPFcfg:
   def __init__(self):
     for varname in Namelistcfg1:
       exec('self.' + varname + ' = None')
 
-class WNPFcovid():
+class WNPFcovid:
   def __init__(self):
     for varname in Namelistcovid1:
       exec('self.' + varname + ' = None')
 
-class WNPFeq():
+class WNPFeq:
   def __init__(self):
     for varname in Namelisteq1:
       exec('self.' + varname + ' = None')
 
-class WNPFpre():
+class WNPFpre:
   def __init__(self):
     for varname in Namelistpre1:
       exec('self.' + varname + ' = None')
 
-class WNPFfit():
+class WNPFfit:
   def __init__(self):
     for varname in Namelistfit1:
       exec('self.' + varname + ' = None')
 
-class WNPFlstm():
+class WNPFlstm:
   def __init__(self):
     for varname in Namelistlstm1:
       exec('self.' + varname + ' = None')
 
-class WNPFsctr():
+class WNPFsctr:
   def __init__(self):
     for varname in Namelistsctr1:
       exec('self.' + varname + ' = None')
@@ -349,30 +349,32 @@ We can select time values or sequences [Ttot-reason] [FFFFcfg.Num_Seq-reason] fo
 ###General Functions for all Components
 """
 
-def wraptotext(textinput,size=None):
-  if size is None:
-    size = 120
-  textlist = wrap(textinput,size)
-  textresult = textlist[0]
-  for itext in range(1,len(textlist)):
-    textresult += '\n'+textlist[itext]
-  return textresult
+from library.utility import wraptotext, timenow, float32fromstrwithNaN, printexit
 
-def timenow():
-  now = datetime.now()
-  return now.strftime("%m/%d/%Y, %H:%M:%S") + " UTC"
+# def wraptotext(textinput,size=None):
+#   if size is None:
+#     size = 120
+#   textlist = wrap(textinput,size)
+#   textresult = textlist[0]
+#   for itext in range(1,len(textlist)):
+#     textresult += '\n'+textlist[itext]
+#   return textresult
 
-def float32fromstrwithNaN(instr):
-  if instr == 'NaN':
-    return FFFFcfg.NaN
-  return np.float32(instr)
+# def timenow():
+#   now = datetime.now()
+#   return now.strftime("%m/%d/%Y, %H:%M:%S") + " UTC"
 
-def printexit(exitmessage):
-  print(exitmessage)
-  sys.exit()
+# def float32fromstrwithNaN(instr):
+#   if instr == 'NaN':
+#     return FFFFcfg.NaN
+#   return np.float32(instr)
 
-def strrnd(value):
-  return str(round(value,4))
+# def printexit(exitmessage):
+#   print(exitmessage)
+#   sys.exit()
+
+# def strrnd(value):
+#   return str(round(value,4))
 
 import matplotlib.dates as mdates
 
@@ -552,8 +554,13 @@ def SetupScience(FFFFcfg):
 FFFFcfg.NaN = np.float32("NaN")
 FFFFcfg.PLOTNUMBER =0 # Count Output Plots
 
-UpdateList = ["FFFFcfg.LocalRunName", "FFFFcfg.LocalRunComment", "FFFFcfg.UseLSTMModel", \
-              "FFFFcfg.UseScienceTransformerModel", "FFFFcfg.UseTFTModel", "FFFFcfg.UseModel", "FFFFcfg.Directoryaddon"]
+UpdateList = ["FFFFcfg.LocalRunName", 
+              "FFFFcfg.LocalRunComment", 
+              "FFFFcfg.UseLSTMModel",
+              "FFFFcfg.UseScienceTransformerModel", 
+              "FFFFcfg.UseTFTModel", 
+              "FFFFcfg.UseModel", 
+              "FFFFcfg.Directoryaddon"]
 CountDatasets = 0
 
 ComponentRunsJSON = [""]
@@ -1145,10 +1152,10 @@ def ReadEarthquakeData(FFFFcfg):
 
       itime = 0
       for nextrow in csv_reader:
-        if (len(nextrow)!=Numberpixels + 1):
+        if len(nextrow)!=Numberpixels + 1:
           printexit('EXIT: Incorrect row length Magnitude ' + str(itime) + ' ' +str(len(nextrow)))
         localtime = nextrow[0]
-        if (itime != int(localtime)):
+        if itime != int(localtime):
           printexit('EXIT: Unexpected Time in Magnitude ' + localtime + ' ' +str(itime))
         for iloc in range(0, Numberpixels):
           FFFFpre.BasicInputTimeSeries[itime,iloc,0] = TransformMagnitude(FFFFcfg,float(nextrow[iloc + 1]))
@@ -1169,10 +1176,10 @@ def ReadEarthquakeData(FFFFcfg):
 
       itime = 0
       for nextrow in csv_reader:
-        if (len(nextrow)!=Numberpixels + 1):
+        if len(nextrow)!=Numberpixels + 1:
           printexit('EXIT: Incorrect row length Depth ' + str(itime) + ' ' +str(len(nextrow)))
         localtime = nextrow[0]
-        if (itime != int(localtime)):
+        if itime != int(localtime):
           printexit('EXIT: Unexpected Time in Depth ' + localtime + ' ' +str(itime))
         for iloc in range(0, Numberpixels):
           FFFFpre.BasicInputTimeSeries[itime,iloc,1] = nextrow[iloc + 1]
@@ -1193,10 +1200,10 @@ def ReadEarthquakeData(FFFFcfg):
 
       itime = 0
       for nextrow in csv_reader:
-        if (len(nextrow)!=Numberpixels + 1):
+        if len(nextrow)!=Numberpixels + 1:
           printexit('EXIT: Incorrect row length Multiplicity ' + str(itime) + ' ' +str(len(nextrow)))
         localtime = nextrow[0]
-        if (itime != int(localtime)):
+        if itime != int(localtime):
           printexit('EXIT: Unexpected Time in Multiplicity ' + localtime + ' ' +str(itime))
         for iloc in range(0, Numberpixels):
           FFFFpre.BasicInputTimeSeries[itime,iloc,2] = nextrow[iloc + 1]
@@ -1217,10 +1224,10 @@ def ReadEarthquakeData(FFFFcfg):
 
       itime = 0
       for nextrow in csv_reader:
-        if (len(nextrow)!=Numberpixels + 1):
+        if len(nextrow)!=Numberpixels + 1:
           printexit('EXIT: Incorrect row length Rundle Multiplicity ' + str(itime) + ' ' +str(len(nextrow)))
         localtime = nextrow[0]
-        if (itime != int(localtime)):
+        if itime != int(localtime):
           printexit('EXIT: Unexpected Time in Rundle Multiplicity ' + localtime + ' ' +str(itime))
         for iloc in range(0, Numberpixels):
           FFFFpre.BasicInputTimeSeries[itime,iloc,3] = nextrow[iloc + 1]
@@ -1256,7 +1263,7 @@ def ReadEarthquakeData(FFFFcfg):
 
     iquake = 0
     for nextrow in csv_reader:
-      if (len(nextrow)!=6):
+      if len(nextrow)!=6:
         printexit('EXIT: Incorrect row length Special Earthquakes ' + str(iquake) + ' ' +str(len(nextrow)))
       FFFFeq.Specialdate[iquake] = nextrow[0]
       FFFFeq.Speciallong[iquake] = nextrow[1]
@@ -1368,13 +1375,13 @@ def ReadEarthquakeData(FFFFcfg):
       iloc = 0
       if ReadFaultMethod ==1:
         for nextrow in csv_reader:
-          if (len(nextrow)!=1):
+          if len(nextrow)!=1:
             printexit('EXIT: Incorrect row length Fault Label Data ' + str(iloc) + ' ' + str(len(nextrow)))
           RawFaultData[iloc] = nextrow[0]
           iloc += 1
       else:
         for nextrow in csv_reader:
-          if (len(nextrow)!=Numberxpixels):
+          if len(nextrow)!=Numberxpixels:
             printexit('EXIT: Incorrect row length Fault Label Data ' + str(iloc) + ' ' + str(len(nextrow)) + ' ' + str(Numberxpixels))
           for jloc in range(0, len(nextrow)):
             RawFaultData[iloc] = nextrow[jloc]
@@ -2256,7 +2263,7 @@ def EndofEarthquake(FFFFcfg):
 # Set Operational Parameters
   FFFFcfg.SymbolicWindows = True
   FFFFcfg.Tseq = 26
-  if FFFFcfg.UseTFTModel == True:
+  if FFFFcfg.UseTFTModel:
     if FFFFcfg.Dailyunit == 14:
       FFFFcfg.GenerateFutures = True
       FFFFcfg.UseFutures = True
@@ -2570,7 +2577,7 @@ def ReadApril2021CovidData(FFFFcfg):
 
       iloc = 0
       for nextrow in csv_reader:
-        if (len(nextrow)< FFFFpre.NumberofTimeunits + 1 + FFFFcfg.Dropearlydata):
+        if len(nextrow)< FFFFpre.NumberofTimeunits + 1 + FFFFcfg.Dropearlydata:
           printexit('EXIT: Incorrect row length Cases ' + str(iloc) + ' ' +str(len(nextrow)))
         # skip first entry
         localfips = nextrow[0]
@@ -2604,10 +2611,10 @@ def ReadApril2021CovidData(FFFFcfg):
 
       iloc = 0
       for nextrow in csv_reader:
-        if (len(nextrow)<FFFFpre.NumberofTimeunits + 1 + FFFFcfg.Dropearlydata):
+        if len(nextrow)<FFFFpre.NumberofTimeunits + 1 + FFFFcfg.Dropearlydata:
           printexit('EXIT: Incorrect row length Deaths ' + str(iloc) + ' ' +str(len(nextrow)))
         localfips = nextrow[0]
-        if (FFFFpre.Locationfips[iloc] != int(localfips)):
+        if FFFFpre.Locationfips[iloc] != int(localfips):
           printexit('EXIT: Unexpected FIPS Deaths ' + localfips + ' ' +str(FFFFpre.Locationfips[iloc]))
         for itime in range(0, FFFFpre.NumberofTimeunits):
           FFFFpre.BasicInputTimeSeries[itime,iloc,1] = np.float(nextrow[itime + 1 + FFFFcfg.Dropearlydata])
@@ -2758,7 +2765,7 @@ def ReadJan2021CovidData(FFFFcfg):
 
       iloc = 0
       for nextrow in csv_reader:
-        if (len(nextrow)< FFFFpre.NumberofTimeunits + 1 + FFFFcfg.Dropearlydata):
+        if len(nextrow)< FFFFpre.NumberofTimeunits + 1 + FFFFcfg.Dropearlydata:
           printexit('EXIT: Incorrect row length Cases ' + str(iloc) + ' ' +str(len(nextrow)))
         # skip first entry
         localfips = nextrow[0]
@@ -2788,10 +2795,10 @@ def ReadJan2021CovidData(FFFFcfg):
 
       iloc = 0
       for nextrow in csv_reader:
-        if (len(nextrow)<FFFFpre.NumberofTimeunits + 1 + FFFFcfg.Dropearlydata):
+        if len(nextrow)<FFFFpre.NumberofTimeunits + 1 + FFFFcfg.Dropearlydata:
           printexit('EXIT: Incorrect row length Deaths ' + str(iloc) + ' ' +str(len(nextrow)))
         localfips = nextrow[0]
-        if (FFFFpre.Locationfips[iloc] != int(localfips)):
+        if FFFFpre.Locationfips[iloc] != int(localfips):
           printexit('EXIT: Unexpected FIPS Deaths ' + localfips + ' ' +str(FFFFpre.Locationfips[iloc]))
         for itime in range(0, FFFFpre.NumberofTimeunits):
           FFFFpre.BasicInputTimeSeries[itime,iloc,1] = nextrow[itime + 1 + FFFFcfg.Dropearlydata]
@@ -2906,7 +2913,7 @@ if FFFFcovid.ReadAugust2020Covid or FFFFcovid.RereadMay2020:
       iloc = 0
 
       for nextrow in csv_reader:
-        if (len(nextrow)!=FFFFpre.NumberofTimeunits + 1 + FFFFcfg.Dropearlydata):
+        if len(nextrow)!=FFFFpre.NumberofTimeunits + 1 + FFFFcfg.Dropearlydata:
           printexit('EXIT: Incorrect row length Cases ' + str(iloc) + ' ' +str(len(nextrow)))
         localfips = nextrow[0]
         FFFFpre.Locationcolumns.append(localfips)
@@ -2932,10 +2939,10 @@ if FFFFcovid.ReadAugust2020Covid or FFFFcovid.RereadMay2020:
 
       iloc = 0
       for nextrow in csv_reader:
-        if (len(nextrow)!=FFFFpre.NumberofTimeunits + 1 + FFFFcfg.Dropearlydata):
+        if len(nextrow)!=FFFFpre.NumberofTimeunits + 1 + FFFFcfg.Dropearlydata:
           printexit('EXIT: Incorrect row length Deaths ' + str(iloc) + ' ' +str(len(nextrow)))
         localfips = nextrow[0]
-        if (FFFFpre.Locationfips[iloc] != int(localfips)):
+        if FFFFpre.Locationfips[iloc] != int(localfips):
           printexit('EXIT: Unexpected FIPS Deaths ' + localfips + ' ' +str(FFFFpre.Locationfips[iloc]))
         for itime in range(0, FFFFpre.NumberofTimeunits):
           FFFFpre.BasicInputTimeSeries[itime,iloc,1] = nextrow[itime + 1 + FFFFcfg.Dropearlydata]
@@ -3014,13 +3021,13 @@ if FFFFcovid.ReadAugust2020Covid or FFFFcovid.RereadMay2020:
           throwaway = 2
           if FFFFcovid.UseOLDCovariates:
             throwaway = 6
-          if ( len(header) != (throwaway+FFFFpre.NpropperTimeStatic)):
+          if len(header) != (throwaway + FFFFpre.NpropperTimeStatic):
               printexit('EXIT: Incorrect property header length ' + str(len(header)) + ' ' +str(2+FFFFpre.NpropperTimeStatic))
           FFFFpre.InputPropertyNames[:] = header[throwaway:]
 
           iloc = 0
           for nextrow in csv_reader:
-            if (len(nextrow)!= (throwaway+FFFFpre.NpropperTimeStatic)):
+            if len(nextrow)!= (throwaway + FFFFpre.NpropperTimeStatic):
               printexit('EXIT: Incorrect row length ' + str(iloc) + ' ' + str(2+FFFFpre.NpropperTimeStatic) + ' ' +str(len(nextrow)))
             localfips = int(nextrow[0])
             if not localfips in FFFFpre.FIPSintegerlookup.keys():
@@ -3159,7 +3166,7 @@ def  ProcessNIHCovariates(FFFFcfg):
               if Ftype != 'FIPS':
                 printexit('EXIT: Wrong file type ' + Ftype)
         else:
-          if (FFFFcovid.ReadJan2021Covid or FFFFcovid.ReadApril2021Covid):
+          if FFFFcovid.ReadJan2021Covid or FFFFcovid.ReadApril2021Covid:
             skip = 2
             Ftype = header[0]
             if Ftype != 'Name':
@@ -3198,7 +3205,7 @@ def  ProcessNIHCovariates(FFFFcfg):
         iloc = 0
 
         for nextrow in csv_reader:
-          if (len(nextrow)!=FFFFpre.NumberofTimeunits + skip -enddifference1-tdelta):
+          if len(nextrow)!=FFFFpre.NumberofTimeunits + skip -enddifference1-tdelta:
             printexit('EXIT: Incorrect row length ' + Propnames[ifiles] + ' Location ' + str(iloc) + ' ' +str(len(nextrow)))
           if FFFFcovid.ReadNov2021Covid or FFFFcovid.ReadMay2022Covid:
             localfips = nextrow[0]
@@ -3246,7 +3253,7 @@ def  ProcessNIHCovariates(FFFFcfg):
             uselocation[iloc] = False
             NumberCut += 1
       print(' Population Cut ' + str(CovidPopulationCut) + ' removes ' + str(NumberCut) + ' of ' + str(FFFFpre.Nloc))
-    if(NumberCut > 0):
+    if NumberCut > 0:
       NewNloc = FFFFpre.Nloc - NumberCut
       NewNFIPS = NewNloc
       NewLocationfips = np.empty(NewNFIPS, dtype=int) # integer version of FIPs
@@ -3778,7 +3785,7 @@ def SetPropsandPreds(FFFFcfg):
     printexit(' Inconsistent Prediction Lengths ' + str(len(FFFFcfg.PredSource)) + ' ' + str(len(FFFFcfg.PredSourceNumber)) )
 
   # Executed by all even if FFFFcfg.GenerateFutures false except for direct Romeo data
-  if (not FFFFcovid.ReadJuly2020Covid) and not (FFFFcovid.ReadJan2021Covid) and not (FFFFcovid.ReadApril2021Covid):
+  if (not FFFFcovid.ReadJuly2020Covid) and not FFFFcovid.ReadJan2021Covid and not FFFFcovid.ReadApril2021Covid:
     if not FFFFcfg.UseFutures:
         FFFFpre.LengthFutures = 0
     print(startbold + "Number of Futures -- separate for each regular prediction " +str(FFFFpre.LengthFutures) + resetfonts)
@@ -4048,7 +4055,7 @@ def checkNaN(y):
   if len(y.shape) == 2:
     for i in range(0,y.shape[0]):
         for j in range(0,y.shape[1]):
-            if(np.math.isnan(y[i,j])):
+            if np.math.isnan(y[i,j]):
                 countNaN += 1
             else:
                 countnotNaN += 1
@@ -4056,7 +4063,7 @@ def checkNaN(y):
     for i in range(0,y.shape[0]):
       for j in range(0,y.shape[1]):
         for k in range(0,y.shape[2]):
-          if(np.math.isnan(y[i,j,k])):
+          if np.math.isnan(y[i,j,k]):
               countNaN += 1
               ctprt += 1
               if ctprt <= 10:
@@ -4906,7 +4913,7 @@ def DLprediction(FFFFcfg,Xin, yin, DLmodel, modelflag, LabelFit =''):
           overcount += 1
           weightedovercount += FFFFpre.Predictionwgt[i]
 
-          if(math.isnan(yy[i])):
+          if math.isnan(yy[i]):
             continue
           weightedcount += FFFFpre.Predictionwgt[i]
           totalcount += 1
@@ -5153,9 +5160,9 @@ def ProduceIndividualPlots(Observations, FitPredictions):
       Locationindex = sortedcities[pickout]
       fips = FFFFpre.Locationfips[Locationindex]
       if not(FFFFcfg.Hydrology or FFFFcfg.Earthquake):
-        if (fips == 6037 or fips == 36061 or fips == 17031 or fips == 53033):
+        if fips == 6037 or fips == 36061 or fips == 17031 or fips == 53033:
           continue
-      if (fips == fips_b or fips == fips_w):
+      if fips == fips_b or fips == fips_w:
         continue
       plot_by_fips(fips, Observations, FitPredictions)
 
@@ -6228,8 +6235,8 @@ def DLprediction2F(FFFFcfg,Xin, yin, DLmodel, modelflag):
   if FFFFcfg.GarbageCollect:
     gc.collect()
 
-  SensitivityAnalyze = np.full((FFFFpre.NpropperseqTOT), False, dtype =bool)
-  SensitivityChange = np.zeros ((FFFFpre.NpropperseqTOT), dtype = np.float32)
+  SensitivityAnalyze = np.full(FFFFpre.NpropperseqTOT, False, dtype =bool)
+  SensitivityChange = np.zeros (FFFFpre.NpropperseqTOT, dtype = np.float32)
   SensitvitybyPrediction = False
   if FFFFcovid.ReadApril2021Covid:
     for iprop in range(0,FFFFpre.NpropperseqTOT):
@@ -6269,7 +6276,7 @@ def DLprediction2F(FFFFcfg,Xin, yin, DLmodel, modelflag):
 
 
   SensitivityFitPredictions = np.zeros([FFFFcfg.Num_Seq, FFFFpre.Nloc, FFFFpre.NpredperseqTOT, 1 + something], dtype =np.float32)
-  FRanges = np.full((FFFFpre.NpredperseqTOT), 1.0, dtype = np.float32)
+  FRanges = np.full(FFFFpre.NpredperseqTOT, 1.0, dtype = np.float32)
   current_time = timenow()
   print(wraptotext(startbold+startred+ 'DLPrediction2F ' +current_time + ' ' + FFFFcfg.RunName + FFFFcfg.RunComment +  resetfonts))
 
@@ -6661,7 +6668,7 @@ def setSeparateDLinput(model, Spacetime = False):
     return X_train, y_train,X_val,y_val
 
 def InitializeDLforTimeSeries(message,processindexLocal,y_predict):
-  if( processindexLocal == 0 ):
+  if processindexLocal == 0:
       current_time = timenow()
       line = (startbold + current_time + ' ' + message + resetfonts + " Window Size " + str(FFFFcfg.Tseq) +
             " Number of samples over time that sequence starts at and location:" +str(FFFFfit.OuterBatchDimension) +
@@ -6675,7 +6682,7 @@ def InitializeDLforTimeSeries(message,processindexLocal,y_predict):
 
 """### Tensorflow  Monitor"""
 
-class TensorFlowTrainingMonitor():
+class TensorFlowTrainingMonitor:
   def __init__(self, FFFFcfg):
     self.NaN = FFFFcfg.NaN
 
@@ -6835,7 +6842,7 @@ class TensorFlowTrainingMonitor():
     StoreMinLoss = False
     if not np.math.isself.NaN(self.MinLossValue):
 #      if (self.train_epoch < self.MinLossValue) and (self.val_epoch <= self.MinValLossValue):
-      if (self.train_epoch < self.MinLossValue):
+      if self.train_epoch < self.MinLossValue:
         if self.Numsuccess >= self.SuccessLimit:
           StoreMinLoss = True
     else:
@@ -7099,7 +7106,7 @@ class MyLSTMlayer(tf.keras.Model):
                   activation= self.FFFFlstm.LSTMactivationvalue , return_sequences=True, recurrent_activation= self.FFFFlstm.LSTMrecurrent_activation)
     self.LSTM_2 =tf.keras.layers.LSTM(self.FFFFlstm.number_LSTMnodes, recurrent_dropout= self.FFFFlstm.LSTMrecurrent_dropout1, dropout = self.FFFFlstm.LSTMdropout1,
         activation= self.FFFFlstm.LSTMactivationvalue , return_sequences=self.FFFFlstm.LSTMThirdLayer, recurrent_activation= self.FFFFlstm.LSTMrecurrent_activation)
-    if(self.FFFFlstm.LSTMThirdLayer):
+    if self.FFFFlstm.LSTMThirdLayer:
       self.LSTM_3 =tf.keras.layers.LSTM(self.FFFFlstm.number_LSTMnodes, recurrent_dropout= self.FFFFlstm.LSTMrecurrent_dropout1, dropout = self.FFFFlstm.LSTMdropout1,
                     activation= self.FFFFlstm.LSTMactivationvalue , return_sequences=False, recurrent_activation= FFFFlstm.LSTMrecurrent_activation)
     self.dense_2 = tf.keras.layers.Dense(self.FFFFlstm.LSTMFinalMLP, activation=self.FFFFlstm.LSTMactivationvalue)
@@ -7112,9 +7119,9 @@ class MyLSTMlayer(tf.keras.Model):
     else:
       Runningdata = self.LSTM_1(inputs, training=training)
     Runningdata = self.LSTM_2(Runningdata, training=training)
-    if(self.FFFFlstm.LSTMThirdLayer):
+    if self.FFFFlstm.LSTMThirdLayer:
       Runningdata = self.LSTM_3(Runningdata, training=training)
-    if(self.FFFFlstm.LSTMFinalMLP > 0):
+    if self.FFFFlstm.LSTMFinalMLP > 0:
       Runningdata = self.dense_2(Runningdata)
     Outputdata = self.dense_f(Runningdata)
     return Outputdata
@@ -7747,7 +7754,7 @@ For example, consider that `Q` and `K` have a mean of 0 and variance of 1. Their
 The mask is multiplied with -1e9 (close to negative infinity). This is done because the mask is summed with the scaled matrix multiplication of Q and K and is applied immediately before a softmax. The goal is to zero out these cells, and large negative inputs to softmax are near zero in the output.
 """
 
-def CalculateFullAttention(q,k,v,FFFFsctr.num_heads, mask=None):
+def CalculateFullAttention(q, k, v, FFFFsctr.num_heads, mask=None):
 
   depth = tf.shape(k)[-1]
   dk = tf.cast(depth, tf.float32) # dk is depth in all methods
@@ -8335,7 +8342,7 @@ def DLprediction2E(FFFFcfg,Xin, yin, DLmodel, modelflag):
 
   FFFFsctr.SampleSize = 1
   FitRanges_PartialAtt = np.zeros([FFFFcfg.Num_Seq, FFFFpre.Nloc, FFFFpre.NpredperseqTOT,5], dtype =np.float32)
-  FRanges = np.full((FFFFpre.NpredperseqTOT), 1.0, dtype = np.float32)
+  FRanges = np.full(FFFFpre.NpredperseqTOT, 1.0, dtype = np.float32)
   # 0 count 1 mean 2 Standard Deviation 3 Min 4 Max
 
   print(wraptotext(startbold+startred+ 'DLPrediction2E Partial Attention ' +current_time + ' ' + FFFFcfg.RunName + FFFFcfg.RunComment +  resetfonts))
@@ -8500,7 +8507,7 @@ def DLprediction2E(FFFFcfg,Xin, yin, DLmodel, modelflag):
         LocLocal = ilocarray[iloc_sample]
         SeqLocal = iseqarray[iloc_sample]
         yyhat = PredictedVector[0,iloc_sample]
-        if (FitRanges_PartialAtt [SeqLocal,LocLocal,0,0] < 0.1):
+        if FitRanges_PartialAtt [SeqLocal,LocLocal,0,0] < 0.1:
             FitRanges_PartialAtt [SeqLocal,LocLocal,:,3] = yyhat
             FitRanges_PartialAtt [SeqLocal,LocLocal,:,4] = yyhat
         else:
@@ -8590,7 +8597,7 @@ def DLprediction2E(FFFFcfg,Xin, yin, DLmodel, modelflag):
         LocLocal = ilocarray[iloc_sample]
         SeqLocal = iseqarray[iloc_sample]
         yyhat = PredictedVector[0,iloc_sample]
-        if (FitRanges_PartialAtt [SeqLocal,LocLocal,0,0] < 0.1):
+        if FitRanges_PartialAtt [SeqLocal,LocLocal,0,0] < 0.1:
             FitRanges_PartialAtt [SeqLocal,LocLocal,:,3] = yyhat
             FitRanges_PartialAtt [SeqLocal,LocLocal,:,4] = yyhat
         else:
@@ -8666,7 +8673,7 @@ def DLprediction2D(FFFFcfg,Xin, yin, DLmodel):
   FFFFsctr.SampleSize = 1
 
   FitRanges_FullAtt = np.zeros([FFFFcfg.Num_Seq, FFFFpre.Nloc, FFFFpre.NpredperseqTOT,5], dtype =np.float32)
-  FRanges = np.full((FFFFpre.NpredperseqTOT), 1.0, dtype = np.float32)
+  FRanges = np.full(FFFFpre.NpredperseqTOT, 1.0, dtype = np.float32)
   # 0 count 1 mean 2 Standard Deviation 3 Min 4 Max
 
   print(wraptotext(startbold+startred+ 'DLPrediction2D ' +current_time + ' ' + FFFFcfg.RunName + FFFFcfg.RunComment +  resetfonts))
@@ -8780,7 +8787,7 @@ def DLprediction2D(FFFFcfg,Xin, yin, DLmodel):
         LocLocal = Labelsused[iloc_sample,1]
         SeqLocal = Labelsused[iloc_sample,0]
         yyhat = PredictedVector[0,iloc_sample]
-        if (FitRanges_FullAtt [SeqLocal,LocLocal,0,0] < 0.1):
+        if FitRanges_FullAtt [SeqLocal,LocLocal,0,0] < 0.1:
             FitRanges_FullAtt [SeqLocal,LocLocal,:,3] = yyhat
             FitRanges_FullAtt [SeqLocal,LocLocal,:,4] = yyhat
         else:
@@ -9240,7 +9247,7 @@ def DLprediction2(FFFFcfg,Xin, yin, DLmodel):
             quan4 += loss
             count4 += 1
 
-          if (FitRanges [iseq,iloc,0,0] < 0.1):
+          if FitRanges [iseq,iloc,0,0] < 0.1:
             FitRanges [iseq,iloc,:,3] = yyhat
             FitRanges [iseq,iloc,:,4] = yyhat
           else:
@@ -9276,10 +9283,10 @@ def DLprediction2(FFFFcfg,Xin, yin, DLmodel):
         FitPredictions2 = FitPredictions0.copy()
         bestvalue1 = quan1
         bestvalue2 = quan2
-      if ((shuffling >0) and (quan1 < bestvalue1)):
+      if (shuffling > 0) and (quan1 < bestvalue1):
         FitPredictions1 = FitPredictions0.copy()
         bestvalue1 = quan1
-      if ((shuffling >0) and (quan2 < bestvalue2)):
+      if (shuffling > 0) and (quan2 < bestvalue2):
         FitPredictions2 = FitPredictions0.copy()
         bestvalue2 = quan2
 
@@ -9342,7 +9349,7 @@ def DLprediction2(FFFFcfg,Xin, yin, DLmodel):
         FitPredictions[iseq,iloc,:] = FitRanges[iseq,iloc,:,1]
         yy = yin[iseq,iloc]
         for i in range(0,FFFFpre.NpredperseqTOT):
-          if(math.isnan(yy[i])):
+          if math.isnan(yy[i]):
             continue
           mse = FFFFpre.Predictionwgt[i] * (yy[i]-FitPredictions[iseq,iloc,i])**2
           RMSEbyclass[i] += mse
@@ -9426,7 +9433,7 @@ def DLprediction3( yin, FitPredictions, LabelFit, Dumpplot = False):
           overcount += 1
           weightedovercount += FFFFpre.Predictionwgt[i]
 
-          if(math.isnan(yy[i])):
+          if math.isnan(yy[i]):
             continue
           weightedcount += FFFFpre.Predictionwgt[i]
           totalcount += 1
@@ -9844,15 +9851,24 @@ def RunScienceTransformer(FFFFcfg):
       SavedValLoss = recordvalloss[vallen-1]
     print(startbold + 'Network restored from ' + save_path + '\nLoss ' + str(round(recordtrainloss[trainlen-1],7))
       + extrainfo + ' Epochs ' + str(tfepochstep.numpy()) + resetfonts )
-    TransformerTFMonitor.SetCheckpointParms(mycheckpoint,FFFFcfg.CHECKPOINTDIR,FFFFcfg.RunName = FFFFcfg.RunName,Restoredcheckpoint= True,
-            Restored_path = save_path,  ValidationFraction = FFFFsctr.UsedTransformervalidationfrac, SavedTrainLoss = SavedTrainLoss, SavedValLoss =SavedValLoss)
+    TransformerTFMonitor.SetCheckpointParms(mycheckpoint,
+                                            FFFFcfg.CHECKPOINTDIR,
+                                            FFFFcfg.RunName=FFFFcfg.RunName,
+                                            Restoredcheckpoint=True,
+                                            Restored_path=save_path,
+                                            ValidationFraction=FFFFsctr.UsedTransformervalidationfrac,
+                                            SavedTrainLoss=SavedTrainLoss,
+                                            SavedValLoss =SavedValLoss)
   else:
-    TransformerTFMonitor.SetCheckpointParms(mycheckpoint,FFFFcfg.CHECKPOINTDIR,FFFFcfg.RunName = FFFFcfg.RunName,Restoredcheckpoint= False,
+    TransformerTFMonitor.SetCheckpointParms(mycheckpoint,
+                                            FFFFcfg.CHECKPOINTDIR,
+                                            FFFFcfg.RunName = FFFFcfg.RunName,
+                                            Restoredcheckpoint= False,
                                             ValidationFraction = FFFFsctr.UsedTransformervalidationfrac)
 
   # This just does analysis
   if FFFFfit.AnalysisOnly:
-    finalanalysis(FFFFcfg,myScienceTransformermodel,recordtrainloss, recordvalloss,FFFFcfg.RunComment, True)
+    finalanalysis(FFFFcfg,myScienceTransformermodel, recordtrainloss, recordvalloss,FFFFcfg.RunComment, True)
     return myScienceTransformermodel
 
   # Initialize progress bars
@@ -10154,12 +10170,12 @@ def finalanalysis(FFFFcfg,myScienceTransformermodel,recordtrainloss, recordvallo
     if FFFFcfg.SymbolicWindows:
       DLprediction2D(FFFFcfg,FFFFpre.ReshapedSequencesTOT, FFFFpre.RawInputPredictionsTOT,myScienceTransformermodel)
       DLprediction2(FFFFcfg,FFFFpre.ReshapedSequencesTOT, FFFFpre.RawInputPredictionsTOT,myScienceTransformermodel)
-      if (not FFFFcfg.Hydrology):
+      if not FFFFcfg.Hydrology:
         DLprediction2(FFFFcfg,FFFFpre.ReshapedSequencesTOT, FFFFpre.RawInputPredictionsTOT,myScienceTransformermodel)
     else:
       DLprediction2D(FFFFcfg,FFFFpre.RawInputSequencesTOT, FFFFpre.RawInputPredictionsTOT,myScienceTransformermodel)
       DLprediction2(FFFFcfg,FFFFpre.RawInputSequencesTOT, FFFFpre.RawInputPredictionsTOT,myScienceTransformermodel)
-      if (not FFFFcfg.Hydrology):
+      if not FFFFcfg.Hydrology:
         DLprediction2(FFFFcfg,FFFFpre.RawInputSequencesTOT, FFFFpre.RawInputPredictionsTOT,myScienceTransformermodel)
 
 def SummarizeFullModel(FFFFcfg,DLmodel):
@@ -10422,7 +10438,7 @@ def checkdfNaN(label, AttributeSpec, y):
     if AttributeSpec.loc[colname,'DataTypes'] != DataTypes.REAL_VALUED:
       continue
     for i in range(0,y.shape[0]):
-          if(np.math.isnan(y.iloc[i,j])):
+          if np.math.isnan(y.iloc[i,j]):
               countNaN += 1
               count[j] += 1
           else:
@@ -11076,7 +11092,7 @@ class FFFFWNPFFormatter(GenericDataFormatter):
     for identifier, sliced in df.groupby(id_column):
 
       data = sliced[real_inputs].values
-      if TFTMultivariate == True:
+      if TFTMultivariate:
         targets = sliced[target_column].values
       else:
         targets = sliced[target_column].values
@@ -11604,7 +11620,7 @@ class TFTdatasetup(object):
 
     if myTFTTools.TFTSymbolicWindows:
 
-        inputs = np.zeros((actual_samples), dtype = np.int32)
+        inputs = np.zeros(actual_samples, dtype = np.int32)
         outputs = np.zeros((actual_samples, myTFTTools.time_steps, myTFTTools.output_size))
         time = np.empty((actual_samples, myTFTTools.time_steps, 1), dtype=object)
         identifiers = np.empty((actual_samples, myTFTTools.time_steps, 1), dtype=object)
@@ -11702,7 +11718,7 @@ TFToutput_map = None # holder for final output
 Called from finalizeDL
 """
 
-class TFTSaveandInterpret():
+class TFTSaveandInterpret:
 
   def __init__(self, currentTFTmodel, currentoutput_map, ReshapedPredictionsTOT):
 # output_map is a dictionary pointing to dataframes
@@ -11846,7 +11862,7 @@ class TFTSaveandInterpret():
                 rawdata[ifuture] = newvalue
 
               # Form collective quantity
-              if (predstatus == 1):
+              if predstatus == 1:
                 value = rawdata.sum()
               elif predstatus >= 2:
                 value = log_energy(rawdata, sumaxis=0)
@@ -12342,7 +12358,7 @@ class TFTLSTMLayer(tf.keras.Model):
       self.second_return_state = True
     self.third_return_state = self.TFTLSTMreturn_state
 
-    if(self.TFTLSTMInitialMLP > 0):
+    if self.TFTLSTMInitialMLP > 0:
       n1= LSTMname +'LSTMDense1'
       self.dense_1 = tf.keras.layers.Dense(self.TFTLSTMInitialMLP, activation=self.TFTLSTMactivationvalue, name =n1)
     n2= LSTMname +'LSTMLayer1'
@@ -12382,7 +12398,7 @@ class TFTLSTMLayer(tf.keras.Model):
         self.LSTM_3 =tf.keras.layers.LSTM(self.TFTnumber_LSTMnodes, recurrent_dropout= self.TFTLSTMrecurrent_dropout1, dropout = self.TFTLSTMdropout1,
           return_state = self.third_return_state, activation= self.TFTLSTMactivationvalue ,
           return_sequences=True, recurrent_activation= self.TFTLSTMrecurrent_activation, name=n4)
-    if(self.TFTLSTMFinalMLP > 0):
+    if self.TFTLSTMFinalMLP > 0:
       n5= LSTMname +'LSTMDense2'
       n6= LSTMname +'LSTMDense3'
       self.dense_2 = tf.keras.layers.Dense(self.TFTLSTMFinalMLP, activation=self.TFTLSTMactivationvalue, name=n5)
@@ -12398,7 +12414,7 @@ class TFTLSTMLayer(tf.keras.Model):
       printexit(' Missing context in LSTM c')
     returnstate_h = None
     returnstate_c = None
-    if(self.TFTLSTMInitialMLP > 0):
+    if self.TFTLSTMInitialMLP > 0:
       Runningdata = self.dense_1(inputs)
     else:
       Runningdata = inputs
@@ -12433,7 +12449,7 @@ class TFTLSTMLayer(tf.keras.Model):
       else:
         Runningdata = self.LSTM_3(Runningdata, training=training, initial_state=initial_statehc3)
 
-    if(self.TFTLSTMFinalMLP > 0):
+    if self.TFTLSTMFinalMLP > 0:
       Runningdata = self.dense_2(Runningdata)
       Outputdata = self.dense_f(Runningdata)
     else:
